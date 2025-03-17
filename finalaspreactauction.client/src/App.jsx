@@ -5,7 +5,7 @@ import Header from "./Components/Page/Header"
 import Footer from "./Components/Page/Footer"
 import AdminSide from "./Components/Admin/AdminSide"
 import ModelList from "./Components/Fetch/ModelList"
-import AddCar from "./Components/Fetch/AddCarv2"
+import AddCar from "./Components/Fetch/AddCar"
 //import Account from "./Components/Account/Account"
 //import MakeList from "./Components/Fetch/MakeList"
 

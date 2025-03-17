@@ -31,6 +31,13 @@ public class ModelController : ControllerBase
 
     }
 
+    [HttpGet("GetByMakeId")]
+    public async Task<ActionResult<List<Model>>> GetByMakeId(int id)
+    {
+        var data = await _modelService.GetModelsByMakeId(id);
+        return Ok(data);
+    }
+
     [HttpGet("GetById")]
     public async Task<ActionResult<Model>> GetById(int id)
     {
@@ -50,7 +57,7 @@ public class ModelController : ControllerBase
     {
         var newModel = new Model
         {
-            MakeId= dto.MakeId,
+            MakeId = dto.MakeId,
             Name = dto.Name,
             Type = dto.Type
         };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap';
@@ -21,13 +21,32 @@ function AddCar() {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
 
+
+    const [makes, setMakes] = useState([]);
+    const [models, setModels] = useState([]);
+
+    useEffect(() => {
+        axios.get("https://localhost:7038/api/Brand/GetAll")
+            .then((res) => { setMakes(res.data) })
+    }, [])
+
+
+    useEffect(() => {
+        if (makeId) {
+            axios.get(`https://localhost:7038/api/Model/GetByMakeId?id=${makeId}`)
+                .then((res) => {
+                    setModels(res.data)
+                })
+        }
+    }, [makeId])
+
     async function handlePost(e) {
         e.preventDefault();
 
         const car = {
             year: year,
             ModelId: modelId,
-            MakeId: makeId, 
+            MakeId: makeId,
             vin: vin,
             damage: damage,
             otometer: otometer,
@@ -200,21 +219,31 @@ function AddCar() {
                 <Form.Group className="mb-3" controlId="formBasicMake" style={{ padding: "0 5px" }}>
                     <Form.Label>Make</Form.Label>
                     <Form.Control
-                        type="text"
+                        as="select"
                         placeholder="Enter Make"
                         value={makeId}
                         onChange={(e) => setMakeId(e.target.value)}
-                    />
+                    >
+                        <option value="">Select Make</option>
+                        {makes.map((make) => (
+                            <option key={make.id} value={make.id}>{make.name}</option>
+                        ))}
+                    </Form.Control>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicModel" style={{ padding: "0 5px" }}>
                     <Form.Label>Model</Form.Label>
                     <Form.Control
-                        type="text"
+                        as="select"
                         placeholder="Enter Model"
                         value={modelId}
                         onChange={(e) => setModelId(e.target.value)}
-                    />
+                    >
+                        <option value="">Select Make</option>
+                        {models.map((model) => (
+                            <option key={model.id} value={model.id}>{model.name}</option>
+                        ))}
+                    </Form.Control>
                 </Form.Group>
 
                 <Button
@@ -222,7 +251,7 @@ function AddCar() {
                     type="submit"
                     style={{ display: "block", width: "50%", margin: "0 auto" }}
                 >
-                Submit
+                    Submit
                 </Button>
             </Form>
 
